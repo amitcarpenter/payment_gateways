@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Payment Gateways</title>
+</head>
+<body>
+  <h1>Test Payment Gateways</h1>
+
+  <!-- Stripe Payment Form -->
+  <h2>Stripe Payment</h2>
+  <form action="/api/payments/stripe" method="POST">
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" required>
+    <label for="currency">Currency:</label>
+    <input type="text" name="currency" value="usd" required>
+    <button type="submit">Pay with Stripe</button>
+  </form>
+
+  <!-- Razorpay Payment Form -->
+  <h2>Razorpay Payment</h2>
+  <form action="/api/payments/razorpay" method="POST">
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" required>
+    <label for="currency">Currency:</label>
+    <input type="text" name="currency" value="INR" required>
+    <button type="submit">Pay with Razorpay</button>
+  </form>
+
+  <!-- PayPal Payment Form -->
+  <h2>PayPal Payment</h2>
+  <form action="/api/payments/paypal" method="POST">
+    <label for="amount">Amount:</label>
+    <input type="number" name="amount" required>
+    <label for="currency">Currency:</label>
+    <input type="text" name="currency" value="USD" required>
+    <button type="submit">Pay with PayPal</button>
+  </form>
+</body>
+</html>
