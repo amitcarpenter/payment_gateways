@@ -4,8 +4,6 @@ import Payment from "../models/Payment";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY as string;
 
-console.log(STRIPE_SECRET_KEY)
-
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2024-04-10",
 });
@@ -18,13 +16,17 @@ export const createStripePayment = async (req: Request, res: Response) => {
       amount,
       currency,
     });
+    let id = paymentIntent.id;
+    let amount1 = paymentIntent.amount;
+    console.log(id, amount1);
 
+    // console.log(paymentIntent);
     const newPayment = new Payment({
       amount,
       currency,
-      status: paymentIntent.status,
       paymentGateway: "Stripe",
-      paymentId: paymentIntent.id,
+      paymentId: id,
+      status: paymentIntent.status,
     });
 
     await newPayment.save();

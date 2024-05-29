@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import Razorpay from 'razorpay';
-import Payment from '../models/Payment';
+import { Request, Response } from "express";
+import Razorpay from "razorpay";
+import Payment from "../models/Payment";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID!,
@@ -13,7 +13,7 @@ export const createRazorpayPayment = async (req: Request, res: Response) => {
   const options = {
     amount: amount * 100,
     currency,
-    receipt: 'receipt_order_74394',
+    receipt: "receipt_order_74394",
   };
 
   try {
@@ -22,15 +22,15 @@ export const createRazorpayPayment = async (req: Request, res: Response) => {
     const newPayment = new Payment({
       amount,
       currency,
-      status: 'created',
-      paymentGateway: 'Razorpay',
+      status: "created",
+      paymentGateway: "Razorpay",
       paymentId: order.id,
     });
 
     await newPayment.save();
 
     res.status(200).json({ order });
-  } catch (error : any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };

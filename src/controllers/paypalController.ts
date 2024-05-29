@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
-import paypal from 'paypal-rest-sdk';
-import Payment from '../models/Payment';
+import { Request, Response } from "express";
+import paypal from "paypal-rest-sdk";
+import Payment from "../models/Payment";
 
 paypal.configure({
-  mode: 'sandbox', // 'sandbox' or 'live'
+  mode: "sandbox", // 'sandbox' or 'live'
   client_id: process.env.PAYPAL_CLIENT_ID!,
   client_secret: process.env.PAYPAL_CLIENT_SECRET!,
 });
@@ -12,9 +12,9 @@ export const createPayPalPayment = async (req: Request, res: Response) => {
   const { amount, currency } = req.body;
 
   const create_payment_json = {
-    intent: 'sale',
+    intent: "sale",
     payer: {
-      payment_method: 'paypal',
+      payment_method: "paypal",
     },
     transactions: [
       {
@@ -22,12 +22,12 @@ export const createPayPalPayment = async (req: Request, res: Response) => {
           currency,
           total: amount,
         },
-        description: 'Payment description',
+        description: "Payment description",
       },
     ],
     redirect_urls: {
-      return_url: 'http://return.url',
-      cancel_url: 'http://cancel.url',
+      return_url: "http://return.url",
+      cancel_url: "http://cancel.url",
     },
   };
 
@@ -39,7 +39,7 @@ export const createPayPalPayment = async (req: Request, res: Response) => {
         amount,
         currency,
         status: payment.state,
-        paymentGateway: 'PayPal',
+        paymentGateway: "PayPal",
         paymentId: payment.id,
       });
 
