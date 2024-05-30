@@ -15,7 +15,7 @@ export const createStripePayment = async (req: Request, res: Response) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
-      description: description || 'Export transaction',
+      description: description || "Export transaction",
       shipping: {
         name,
         address: {
@@ -24,7 +24,7 @@ export const createStripePayment = async (req: Request, res: Response) => {
           city: address.city,
           state: address.state,
           postal_code: address.postal_code,
-          country: 'IN', // Correctly set country code to 'IN'
+          country: "IN", // Correctly set country code to 'IN'
         },
       },
     });

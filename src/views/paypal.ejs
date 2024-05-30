@@ -1,0 +1,57 @@
+
+                    <div class="card-body">
+                        <form id="paypal-payment-form">
+                            <div class="form-group">
+                                <label for="paypal-amount">Amount:</label>
+                                <input type="number" class="form-control" id="paypal-amount" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="paypal-currency">Currency:</label>
+                                <select class="form-control" id="paypal-currency" required>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <!-- Add more currency options as needed -->
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-block" id="paypal-submit-button">
+                                Pay with PayPal
+                            </button>
+                        </form>
+                    </div>
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        const paypalSubmitButton = document.getElementById("paypal-submit-button");
+
+        paypalSubmitButton.addEventListener("click", async () => {
+            paypalSubmitButton.disabled = true;
+
+            const amount = document.getElementById("paypal-amount").value;
+            const currency = document.getElementById("paypal-currency").value;
+
+            const paymentData = {
+                amount: amount,
+                currency: currency
+            };
+
+            fetch('/api/payments/paypal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                window.location.href = data.payment.links[1].href; 
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            paypalSubmitButton.disabled = false;
+        });
+    </script>
+</body>
+</html>
