@@ -9,29 +9,37 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
 });
 
 export const createStripePayment = async (req: Request, res: Response) => {
-  const { amount, currency } = req.body;
+  const { amount, currency, description, name, address } = req.body;
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
+      description: description || 'Export transaction',
+      shipping: {
+        name,
+        address: {
+          line1: address.line1,
+          line2: address.line2,
+          city: address.city,
+          state: address.state,
+          postal_code: address.postal_code,
+          country: 'IN', // Correctly set country code to 'IN'
+        },
+      },
     });
-    let id = paymentIntent.id;
-    let amount1 = paymentIntent.amount;
-    console.log(id, amount1);
 
-    // console.log(paymentIntent);
     const newPayment = new Payment({
       amount,
       currency,
-      paymentGateway: "Stripe",
-      paymentId: id,
+      paymentGateWay: "Stripe",
+      paymentID: paymentIntent.id,
       status: paymentIntent.status,
     });
 
     await newPayment.save();
 
-    res.status(200).json({ paymentIntent });
+    res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
