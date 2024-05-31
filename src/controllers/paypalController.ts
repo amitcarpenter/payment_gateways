@@ -26,8 +26,8 @@ export const createPayPalPayment = async (req: Request, res: Response) => {
       },
     ],
     redirect_urls: {
-      return_url: "http://return.url",
-      cancel_url: "http://cancel.url",
+      return_url: "http://localhost:4001/api/payments/success",
+      cancel_url: "http://localhost:4001/api/payments/failure",
     },
   };
 
@@ -35,17 +35,19 @@ export const createPayPalPayment = async (req: Request, res: Response) => {
     if (error) {
       res.status(500).json({ error: error.message });
     } else {
+      JSON.stringify(payment.id);
       const newPayment = new Payment({
         amount,
         currency,
         status: payment.state,
         paymentGateway: "PayPal",
-        paymentId: payment.id,
+        paymentId: JSON.stringify(payment.id),
       });
 
       await newPayment.save();
 
-      res.status(200).json({ payment });
+      console.log(JSON.stringify(payment));
+      return res.status(200).json({ payment });
     }
   });
 };

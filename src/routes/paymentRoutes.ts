@@ -7,10 +7,18 @@ const router = Router();
 
 router.post("/stripe", createStripePayment);
 router.post("/razorpay", createRazorpayPayment);
-router.post("/paypal", createPayPalPayment);
 
 router.get("/", (_, res: Response) => {
   res.render("paymentForm.ejs");
+});
+
+router.post("/paypal", createPayPalPayment);
+
+router.get("/success", (_, res: Response) => {
+  res.send("success");
+});
+router.get("/failure", (_, res: Response) => {
+  res.send("failure ");
 });
 
 export default router;
